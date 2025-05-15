@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameVault - Premium Game Downloads</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0f1923;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: #0a111a;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4ee1ff;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: #ff5e5e;
+        }
+        
+        /* Mobile menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+        }
+        
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #4ee1ff;
+        }
+        
+        /* Hero section styles */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1200/600') center/cover no-repeat;
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff5e5e, #ff897e);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 94, 94, 0.3);
+        }
+        
+        /* Featured Games section */
+        .featured-games {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            color: #4ee1ff;
+        }
+        
+        .section-header p {
+            color: #b3b3b3;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .game-card {
+            background-color: #182635;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .game-info {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .game-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .game-category {
+            font-size: 0.9rem;
+            color: #4ee1ff;
+            margin-bottom: 0.75rem;
+        }
+        
+        .game-description {
+            color: #b3b3b3;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+        
+        .download-button {
+            display: inline-block;
+            background-color: #ff5e5e;
+            color: white;
+            padding: 0.6rem 0;
+            width: 100%;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        
+        .download-button:hover {
+            background-color: #ff3a3a;
+        }
+        
+        /* Categories section */
+        .categories {
+            background-color: #182635;
+            padding: 3rem 0;
+        }
+        
+        .categories-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+        
+        .category-card {
+            background-color: #0f1923;
+            padding: 1.25rem 1rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            color: #4ee1ff;
+        }
+        
+        .category-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .category-count {
+            color: #b3b3b3;
+            font-size: 0.8rem;
+        }
+        
+        /* Testimonials section */
+        .testimonials {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .testimonial-card {
+            background-color: #182635;
+            padding: 1.5rem;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .quote {
+            font-size: 3rem;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            opacity: 0.1;
+            color: #4ee1ff;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.25rem;
+            color: #e6e6e6;
+            font-size: 0.95rem;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        
+        .author-info p {
+            font-size: 0.8rem;
+            color: #b3b3b3;
+        }
+        
+        /* Newsletter section */
+        .newsletter {
+            background-color: #182635;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .newsletter-content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .newsletter h2 {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            color: #4ee1ff;
+        }
+        
+        .newsletter p {
+            color: #b3b3b3;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-input {
+            flex-grow: 1;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .newsletter-button {
+            background: linear-gradient(90deg, #ff5e5e, #ff897e);
+            color: white;
+            padding: 0 1.5rem;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+        
+        .newsletter-button:hover {
+            background: linear-gradient(90deg, #ff3a3a, #ff7265);
+        }
+        
+        /* Footer styles */
+        footer {
+            background-color: #0a111a;
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            color: #4ee1ff;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.7rem;
+        }
+        
+        .footer-links a {
+            color: #b3b3b3;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #182635;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-bottom: 0.5rem;
+        }
+        
+        .social-links a:hover {
+            background-color: #4ee1ff;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            color: #b3b3b3;
+            padding-top: 1.5rem;
+            border-top: 1px solid #182635;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                position: relative;
+            }
+            
+            .menu-toggle {
+                display: flex;
+                z-index: 101;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                flex-direction: column;
+                background-color: #0a111a;
+                width: 70%;
+                max-width: 300px;
+                height: 100vh;
+                padding: 80px 30px 30px;
+                z-index: 100;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+                justify-content: flex-start;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links li {
+                margin: 0 0 20px 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.1rem;
+                display: block;
+                padding: 5px 0;
+            }
+            
+            /* Active menu toggle appearance */
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+            
+            /* Overlay when menu is active */
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                z-index: 99;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s;
+            }
+            
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            /* Adjust Hero Section */
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            /* Game Cards Adjustment */
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            
+            .game-info {
+                padding: 1rem;
+            }
+            
+            .game-description {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .download-button {
+                padding: 0.5rem 0;
+                font-size: 0.9rem;
+            }
+            
+            /* Newsletter Form */
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-input {
+                border-radius: 30px;
+                margin-bottom: 1rem;
+                width: 100%;
+                padding: 0.8rem 1rem;
+            }
+            
+            .newsletter-button {
+                border-radius: 30px;
+                padding: 0.8rem;
+                width: 100%;
+            }
+            
+            /* Footer Adjustments */
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .footer-column {
+                text-align: center;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+        }
+        
+        /* Small Phone Adjustments */
+        @media (max-width: 380px) {
+            .logo {
+                font-size: 1.3rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-header h2 {
+                font-size: 1.7rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">Game<span>Vault</span></a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Games</a></li>
+                <li><a href="#">Categories</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Premium Games, Epic Experiences</h1>
+        <p>Discover and download top-rated games across all genres. From action-packed adventures to mind-bending puzzles, we've got you covered!</p>
+        <a href="#" class="cta-button">Browse Games</a>
+    </section>
+    
+    <!-- Featured Games Section -->
+    <section class="featured-games">
+        <div class="section-header">
+            <h2>Featured Games</h2>
+            <p>Check out our handpicked selection of the hottest games available right now.</p>
+        </div>
+        
+        <div class="games-grid">
+            <!-- Game Card 1 -->
+            <div class="game-card">
+                <img src="/api/placeholder/400/320" alt="Epic Adventure Quest" class="game-image">
+                <div class="game-info">
+                    <h3 class="game-title">Epic Adventure Quest</h3>
+                    <p class="game-category">Action RPG</p>
+                    <p class="game-description">Embark on an epic journey across mystical lands. Battle fierce monsters and collect legendary loot.</p>
+                    <a href="#" class="download-button">Download Now</a>
+                </div>
+            </div>
+            
+            <!-- Game Card 2 -->
+            <div class="game-card">
+                <img src="/api/placeholder/400/320" alt="Cyberpunk Warfare" class="game-image">
+                <div class="game-info">
+                    <h3 class="game-title">Cyberpunk Warfare</h3>
+                    <p class="game-category">FPS</p>
+                    <p class="game-description">Dive into a dystopian future where corporations rule. Use advanced weapons to fight for freedom.</p>
+                    <a href="#" class="download-button">Download Now</a>
+                </div>
+            </div>
+            
+            <!-- Game Card 3 -->
+            <div class="game-card">
+                <img src="/api/placeholder/400/320" alt="Strategic Empires" class="game-image">
+                <div class="game-info">
+                    <h3 class="game-title">Strategic Empires</h3>
+                    <p class="game-category">Strategy</p>
+                    <p class="game-description">Build your civilization from the ground up. Manage resources and conquer rival empires.</p>
+                    <a href="#" class="download-button">Download Now</a>
+                </div>
+            </div>
+            
+            <!-- Game Card 4 -->
+            <div class="game-card">
+                <img src="/api/placeholder/400/320" alt="Racing Revolution" class="game-image">
+                <div class="game-info">
+                    <h3 class="game-title">Racing Revolution</h3>
+                    <p class="game-category">Racing</p>
+                    <p class="game-description">Experience high-octane racing with stunning graphics. Customize cars and compete globally.</p>
+                    <a href="#" class="download-button">Download Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="categories-content">
+            <div class="section-header">
+                <h2>Game Categories</h2>
+                <p>Browse our extensive collection of games by category.</p>
+            </div>
+            
+            <div class="categories-grid">
+                <!-- Category 1 -->
+                <div class="category-card">
+                    <div class="category-icon">🎮</div>
+                    <h3 class="category-title">Action</h3>
+                    <p class="category-count">142 Games</p>
+                </div>
+                
+                <!-- Category 2 -->
+                <div class="category-card">
+                    <div class="category-icon">🏹</div>
+                    <h3 class="category-title">Adventure</h3>
+                    <p class="category-count">98 Games</p>
+                </div>
+                
+                <!-- Category 3 -->
+                <div class="category-card">
+                    <div class="category-icon">🧠</div>
+                    <h3 class="category-title">Puzzle</h3>
+                    <p class="category-count">74 Games</p>
+                </div>
+                
+                <!-- Category 4 -->
+                <div class="category-card">
+                    <div class="category-icon">🚗</div>
+                    <h3 class="category-title">Racing</h3>
+                    <p class="category-count">53 Games</p>
+                </div>
+                
+                <!-- Category 5 -->
+                <div class="category-card">
+                    <div class="category-icon">⚔️</div>
+                    <h3 class="category-title">RPG</h3>
+                    <p class="category-count">127 Games</p>
+                </div>
+                
+                <!-- Category 6 -->
+                <div class="category-card">
+                    <div class="category-icon">🎯</div>
+                    <h3 class="category-title">Shooter</h3>
+                    <p class="category-count">89 Games</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="section-header">
+            <h2>What Gamers Say</h2>
+            <p>Don't just take our word for it. See what our community has to say.</p>
+        </div>
+        
+        <div class="testimonials-grid">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-card">
+                <div class="quote">"</div>
+                <p class="testimonial-text">GameVault has become my go-to place for discovering new games. The download process is quick and the games are always high quality!</p>
+                <div class="testimonial-author">
+                    <img src="/api/placeholder/100/100" alt="User" class="author-image">
+                    <div class="author-info">
+                        <h4>Alex M.</h4>
+                        <p>Hardcore Gamer</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 2 -->
+            <div class="testimonial-card">
+                <div class="quote">"</div>
+                <p class="testimonial-text">I love how easy it is to find games by category. The site is fast, and I've never had any issues with downloads. Highly recommended!</p>
+                <div class="testimonial-author">
+                    <img src="/api/placeholder/100/100" alt="User" class="author-image">
+                    <div class="author-info">
+                        <h4>Sarah K.</h4>
+                        <p>Casual Gamer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter to receive updates on new game releases and exclusive offers.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email address" class="newsletter-input">
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <!-- Footer Column 1 -->
+            <div class="footer-column">
+                <h3>About GameVault</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <!-- Footer Column 2 -->
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Download Issues</a></li>
+                    <li><a href="#">Report a Bug</a></li>
+                </ul>
+            </div>
+            
+            <!-- Footer Column 3 -->
+            <div class="footer-column">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#">FB</a>
+                    <a href="#">TW</a>
+                    <a href="#">IG</a>
+                    <a href="#">YT</a>
+                    <a href="#">DC</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 GameVault. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        // Mobile menu functionality
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        const overlay = document.getElementById('overlay');
+        
+        mobileMenu.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+        });
+        
+        overlay.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            navMenu.classList.remove('active');
+            this.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Close menu when clicking on links
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Resize handler
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                mobileMenu.classList.remove('active');
+                navMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+</html>
